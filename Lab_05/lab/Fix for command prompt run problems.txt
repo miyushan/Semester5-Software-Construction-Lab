@@ -1,0 +1,8 @@
+1. Control Panel\System and Security\System
+2. Click the Advanced system settings link.
+3. Click Environment Variables. In the section System Variables, find the PATH environment variable and select it. Click Edit.
+4. Move, C:\Program Files\Java\jdk-12.0.2\bin to the top
+5. C:\Program Files (x86)\Common Files\Oracle\Java\javapath, should be just below it
+6. Confirm all dialog boxes by clicking ok
+
+This fix is not compulsory since you can pass command line parameters by configuring run appropriately in Intellij idea, NetBeans
