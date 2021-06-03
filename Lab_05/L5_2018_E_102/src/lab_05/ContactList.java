@@ -47,7 +47,7 @@ public class ContactList {
             if(input.length()==10)//check is it a valid number
                 searchNumber(readB, input);
             else
-                throw new Exception("Numbers of digits not 10");    //not a valid number
+                throw new Exception("Not a valid number");    //not a valid number
         }
 
         //check, is the input only contains letters
@@ -56,12 +56,13 @@ public class ContactList {
 
             //check, is the input include the letters and numbers settle as a new contact
         else if(Pattern.matches("[A-Za-z0-9 ]+",input)){
-            String newContact = makeFormat(input,readB);
-            addContact(newContact,path);
+            String newContact = formatContactDetails(input,readB);
+            addNewContact(newContact,path);
         }
         else{
-            throw new Exception("Invalid Name or Number Exception");    //not a valid input
+            throw new Exception("Exception of invalid Name or invalid Number");    //not a valid input
         }
+        System.out.println("\n");
 
     }
 
@@ -115,6 +116,7 @@ public class ContactList {
         }
     }
 
+
     /**
      * This method is used to check name and number exist
      * @param br: buffered reader text
@@ -136,65 +138,64 @@ public class ContactList {
 
 
     /**
-     * Builds the necessary format for print in text file
-     * @param s: inputted stream
-     * @param br: text file in buffered reader format
-     * @return necessary format for print in text file
+     * This method is used to format contact details
+     * @param temp: input text
+     * @param br: buffered reader text
+     * @return
      * @throws Exception
      */
-    public static String makeFormat(String s, BufferedReader br) throws Exception {
+    public static String formatContactDetails(String temp, BufferedReader br) throws Exception {
 
-        String str1 = s.replaceAll("[^A-Za-z ]","");
-        String str2 = s.replaceAll("[^0-9]","");
+        String item1 = temp.replaceAll("[^A-Za-z ]","");
+        String item2 = temp.replaceAll("[^0-9]","");
 
-        if(str2.length()!=10)
-            throw new Exception(("Numbers of digits not 10"));
+        if(item2.length() != 10)
+            throw new Exception(("Not a valid number"));
 
-        while((obj=br.readLine())!=null){
-            if(obj.contains(append(str2))) {
-                //check whether there are any duplicate numbers or not
-                throw new Exception("Duplicate Number Cannot Add");
+        while((obj=br.readLine()) != null){
+            if(obj.contains(append(item2))) {
+                //check whether is there are duplicated numbers
+                throw new Exception("Duplicate Numbers cant add to the list");
             }
         }
-        String dl = str1.substring(0,str1.length()-1);
-        s = dl+": "+append(str2);
-        return s;
+        String val = item1.substring(0,item1.length()-1);
+        temp = val+": "+append(item2);
+        return temp;
     }
 
+
     /**
-     * Adds a contact to the list in alphabetic order
-     * @param newContact: inputted stream
-     * @param file: appropriate list
+     * This method is used to add a new contact in Alphabetic order
+     * @param contact: input details
+     * @param list: considering list
      * @throws Exception
      */
-    public static void addContact(String newContact, File file) throws Exception {
-        FileReader fr = new FileReader(file);
-        BufferedReader br =new BufferedReader(fr);
+    public static void addNewContact(String contact, File list) throws Exception {
+        FileReader ob = new FileReader(list);
+        BufferedReader br =new BufferedReader(ob);
         ArrayList<String> lines =new ArrayList<>();
 
         String currentLine = br.readLine();
-        while(currentLine!=null)
+
+        while(currentLine != null)
         {
-            //make a java list of contacts
-            lines.add(currentLine);
+            lines.add(currentLine);     //create a java list of contacts
             currentLine =br.readLine();
         }
-        //add the new contact to the java list
-        lines.add(newContact);
-        //sort the java list
-        Collections.sort(lines);
 
-        FileWriter fw = new FileWriter(file);
-        PrintWriter pw = new PrintWriter(fw);
+        lines.add(contact);         //add new contact to java list
+        Collections.sort(lines);    //sort java list
 
-        //erase all contacts in the list of text file
-        pw.print("");
+        FileWriter writeF = new FileWriter(list);
+        PrintWriter writeP = new PrintWriter(writeF);
+
+        writeP.print("");
         for(String line:lines){
-            //add all contacts to the text list
-            pw.append(line);
-            pw.append(System.lineSeparator());
+            //add all contacts text list with the new contact
+            writeP.append(line);
+            writeP.append(System.lineSeparator());
         }
-        System.out.println("Contact Successfully Added.");
-        pw.close();
+        System.out.println("New contact is added to the list.");
+        writeP.close();
     }
 }
