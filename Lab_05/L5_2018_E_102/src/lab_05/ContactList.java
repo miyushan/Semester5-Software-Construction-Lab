@@ -19,7 +19,7 @@ public class ContactList {
 
         //initial print statements
         System.out.println("\n\nThis is a programme about a contact list. You can search contact by its name and also its number. And it is able to add new contacts to the list");
-        System.out.println("\nDemo:\n\t1. Search a contact by its name:\tE:\\CAMPUS\\E18_5th_Semester\\EC5080- Software Construction\\Labs\\Lab_05\\L5_2018_E_102\\src\\lab_05\\contact_list.txt Sage\n\t2. Search a contact by its number:\tE:\\CAMPUS\\E18_5th_Semester\\EC5080- Software Construction\\Labs\\Lab_05\\L5_2018_E_102\\src\\lab_05\\contact_list.txt 7707321194\n\t3. Add a new contact:\t\tE:\\CAMPUS\\E18_5th_Semester\\EC5080- Software Construction\\Labs\\Lab_05\\L5_2018_E_102\\src\\lab_05\\contact_list.txt Shakeer Miyushan 0773298953");
+        System.out.println("\nDemo:\n\t1. Search a contact by its name:\tE:\\CAMPUS\\E18_5th_Semester\\EC5080- Software Construction\\Labs\\Lab_05\\L5_2018_E_102\\src\\lab_05\\contact_list.txt Leota\n\t2. Search a contact by its number:\tE:\\CAMPUS\\E18_5th_Semester\\EC5080- Software Construction\\Labs\\Lab_05\\L5_2018_E_102\\src\\lab_05\\contact_list.txt 7707321194\n\t3. Add a new contact:\t\tE:\\CAMPUS\\E18_5th_Semester\\EC5080- Software Construction\\Labs\\Lab_05\\L5_2018_E_102\\src\\lab_05\\contact_list.txt Shakeer Miyushan 0773298953");
         System.out.print("\nInput:\t");
         Scanner sc  = new Scanner(System.in);
 
@@ -30,101 +30,102 @@ public class ContactList {
 
         File path = new File(filePath.append(".txt").toString());
 
-        //if file not exits create a new file
-        if(!path.exists())
-            path.createNewFile();
-
-
-        FileReader fr = new FileReader(path);
-        BufferedReader br =new BufferedReader(fr);
-
-
-
-        String input=txt[1];
-
-        System.out.print("\nRESULT:\n\n");
-
-        //check whether input contains only numbers or not
-        if(input.matches("^\\d+(\\.\\d+)?")) {
-            if(input.length()==10)
-                search_No(br, input);
-            else
-                throw new Exception("Numbers of digits not 10");
+        if(!path.exists()){
+            path.createNewFile();   //create a new file if file doesnt exist
         }
-        /*check whether input contains only alphabets and spaces or not
-            \\p{L} : any kind of letter from any language
-         */
-        else if(input.matches("^\\p{L}+(?: \\p{L}+)*$"))
-            search_Name(br,input);
 
-            //if the input contains letters and numbers
+        FileReader readF = new FileReader(path);
+        BufferedReader readB =new BufferedReader(readF);
+
+
+        String input = txt[1];
+
+        System.out.print("\nYour results:\t");
+
+        //check, is the input only include numbers
+        if(input.matches("^\\d+(\\.\\d+)?")) {
+            if(input.length()==10)//check is it a valid number
+                searchNumber(readB, input);
+            else
+                throw new Exception("Numbers of digits not 10");    //not a valid number
+        }
+
+        //check, is the input only contains letters
+        else if(input.matches("^\\p{L}+(?: \\p{L}+)*$"))
+            searchName(readB,input);
+
+        //check, is the input include the letters and numbers settle as a new contact
         else if(Pattern.matches("[A-Za-z0-9 ]+",input)){
-            String newContact = makeFormat(input,br);
+            String newContact = makeFormat(input,readB);
             addContact(newContact,path);
         }
-        else
-            throw new Exception("Invalid Name or Number Exception");
+        else{
+            throw new Exception("Invalid Name or Number Exception");    //not a valid input
+        }
 
-
-        System.out.println("Thank you for using contact list app");
     }
+
 
     /**
-     * print outputs in two columns
-     * @param s: searched line in the text file
+     * This method is used to print the final output
+     * @param word: line in the .txt file
      */
-    public static void print(String s){
-
-        String str1 = s.replaceAll("[^A-Za-z ]","");
-        String str2 = s.replaceAll("[^0-9-]","");
-        System.out.printf("%-20s %-10s\n",str1,str2);
+    public static void print(String word){
+        String item1 = word.replaceAll("[^A-Za-z ]","");
+        String item2 = word.replaceAll("[^0-9-]","");
+        System.out.printf("\n\t\t%-20s\t%-10s", item1, item2);
 
     }
+
 
     /**
-     * Append '-' to get the phone number format
-     * @param s: Input phone number
-     * @return the phone number in text file format
+     *
+     * This method is used to convert the string into phone number format
+     * @param num: phone number without - signs
+     * @return
      */
-    public static String append(String s){
-        //convert string into string builder format
-        StringBuilder sb = new StringBuilder(s);
-        for (int i=3;i<sb.length()-2;i+=4)
-            sb.insert(i,'-');
-        return sb.toString();
+    public static String append(String num){
+
+        StringBuilder readS = new StringBuilder(num);
+        for (int i=3; i<readS.length()-2; i+=4){
+            readS.insert(i,'-');    //insert - sign
+        }
+        return readS.toString();
     }
+
 
     /**
      * search the number and print the details if it exists
-     * @param br: text file in buffered reader format
-     * @param input: inputted number
+     * @param readB: text file in buffered reader format
+     * @param num: inputted number
      * @throws Exception
      */
-    public static void search_No(BufferedReader br, String input) throws Exception {
-        while((obj=br.readLine())!=null){
-            if(obj.contains(append(input))) {
-                //check whether there are any duplicate numbers or not
+    public static void searchNumber(BufferedReader readB, String num) throws Exception {
+        while((obj = readB.readLine()) != num){
+            if(obj.contains(append(num))) {
+                //check is there any duplicated numbers
                 if(temp>=1)
                     throw new Exception("Stored Data Duplicate Number Exception");
-                print(obj);
-                temp++;
+                    print(obj);
+                    temp++;
             }
         }
-        //check whether the entered number found or not
-        if(temp==0){
+        //check is the comber doesnt
+        if(temp == 0){
             System.out.println("No Contact Found");
         }
     }
 
+
     /**
      * search the name and print the details if it exists
-     * @param br: text file in buffered reader format
-     * @param input: inputted name
+     * @param readB: text file in buffered reader format
+     * @param name: inputted name
      * @throws Exception
      */
-    public static void search_Name(BufferedReader br, String input) throws Exception {
-        while((obj=br.readLine())!=null){
-            if(obj.contains(input)){
+    public static void searchName(BufferedReader readB, String name) throws Exception {
+        while((obj = readB.readLine())!=null){
+            if(obj.contains(name)){
                 print(obj);
                 temp++;
             }
