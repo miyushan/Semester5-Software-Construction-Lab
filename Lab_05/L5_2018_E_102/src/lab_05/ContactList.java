@@ -115,6 +115,21 @@ public class ContactList {
             System.out.println("No Contact Found");
         }
     }
+    public static void search_No(BufferedReader br, String input) throws Exception {
+        while((str=br.readLine())!=null){
+            if(str.contains(append(input))) {
+                //check whether there are any duplicate numbers or not
+                if(count>=1)
+                    throw new Exception("Stored Data Duplicate Number Exception");
+                print(str);
+                count++;
+            }
+        }
+        //check whether the entered number found or not
+        if(count==0){
+            System.out.println("No Contact Found");
+        }
+    }
 
 
     /**
