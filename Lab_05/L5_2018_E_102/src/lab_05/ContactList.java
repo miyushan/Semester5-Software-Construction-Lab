@@ -93,54 +93,37 @@ public class ContactList {
         return readS.toString();
     }
 
-
     /**
      * search the number and print the details if it exists
-     * @param readB: text file in buffered reader format
-     * @param num: inputted number
+     * @param br: text file in buffered reader format
+     * @param input: inputted number
      * @throws Exception
      */
-    public static void searchNumber(BufferedReader readB, String num) throws Exception {
-        while((obj = readB.readLine()) != num){
-            if(obj.contains(append(num))) {
-                //check is there any duplicated numbers
+    public static void searchNumber(BufferedReader br, String input) throws Exception {
+        while((obj=br.readLine())!=null){
+            if(obj.contains(append(input))) {
+                //check whether there are any duplicate numbers or not
                 if(temp>=1)
                     throw new Exception("Stored Data Duplicate Number Exception");
                 print(obj);
                 temp++;
             }
         }
-        //check is the comber doesnt
-        if(temp == 0){
-            System.out.println("No Contact Found");
-        }
-    }
-    public static void search_No(BufferedReader br, String input) throws Exception {
-        while((str=br.readLine())!=null){
-            if(str.contains(append(input))) {
-                //check whether there are any duplicate numbers or not
-                if(count>=1)
-                    throw new Exception("Stored Data Duplicate Number Exception");
-                print(str);
-                count++;
-            }
-        }
         //check whether the entered number found or not
-        if(count==0){
+        if(temp==0){
             System.out.println("No Contact Found");
         }
     }
-
 
     /**
      * search the name and print the details if it exists
-     * @param readB: text file in buffered reader format
-     * @param name: inputted name
+     * @param br: text file in buffered reader format
+     * @param input: inputted name
      * @throws Exception
      */
-    public static void searchName(BufferedReader readB, String name) throws Exception {
-        while((obj = readB.readLine())!=null){
-            if(obj.contains(name)){
+    public static void searchName(BufferedReader br, String input) throws Exception {
+        while((obj=br.readLine())!=null){
+            if(obj.contains(input)){
                 print(obj);
                 temp++;
             }
