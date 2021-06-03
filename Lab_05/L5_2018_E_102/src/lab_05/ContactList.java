@@ -7,47 +7,40 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 
 /**
- * This programme relative for a contact list. By this program you can:
- *          search a number by name,
- *          search a phone number holder's name by number and
- *          add a new contact detail.
- *
- * @author 2018/E/073
+ * @Author: 2018/E/102
+ * This programme is used to create a contact list. Which can able to search a contact by its name, search a contact by its number, and add new contact.
  */
+public class ContactList {
 
-public class phone_Contact_List {
-
-    private static String str;
-    private static int count=0;
+    private static int temp = 0;
+    private static String obj;
 
     public static void main(String []args) throws Exception {
 
-        System.out.println("Welcome to contact list app.\nBy this app you can:\n\t1)Search a number by name\n\t" +
-                "2)Search a phone number holder's name by number\n\t3)Add a new contact detail.\n\nYour input should" +
-                " be as follows...\n1)\tC\\Downloads\\contact_list.txt Mary Anne\n2)\tC\\Downloads\\contact_list.txt" +
-                " 8087791466\n3)\tC\\Downloads\\contact_list.txt Nadeesha Maduranga 0768652839\n\nInput: ");
+        //initial print statements
+        System.out.println("\n\nThis is a programme about a contact list. You can search contact by its name and also its number. And it is able to add new contacts to the list");
+        System.out.println("\nDemo:\n\t1. Search a contact by its name:\tE:\\CAMPUS\\E18_5th_Semester\\EC5080- Software Construction\\Labs\\Lab_05\\L5_2018_E_102\\src\\lab_05\\contact_list.txt Sage\n\t2. Search a contact by its number:\tE:\\CAMPUS\\E18_5th_Semester\\EC5080- Software Construction\\Labs\\Lab_05\\L5_2018_E_102\\src\\lab_05\\contact_list.txt 7707321194\n\t3. Add a new contact:\t\tE:\\CAMPUS\\E18_5th_Semester\\EC5080- Software Construction\\Labs\\Lab_05\\L5_2018_E_102\\src\\lab_05\\contact_list.txt Shakeer Miyushan 0773298953");
+        System.out.print("\nInput:\t");
         Scanner sc  = new Scanner(System.in);
 
         String inputted = sc.nextLine();
-        String[] in =inputted.split(".txt ");
+        String[] txt = inputted.split(".txt ");
 
+        StringBuilder filePath = new StringBuilder(txt[0]); //get the file path
 
-        StringBuilder path = new StringBuilder(in[0]);
-
-
-        File file = new File(path.append(".txt").toString());
+        File path = new File(filePath.append(".txt").toString());
 
         //if file not exits create a new file
-        if(!file.exists())
-            file.createNewFile();
+        if(!path.exists())
+            path.createNewFile();
 
 
-        FileReader fr = new FileReader(file);
+        FileReader fr = new FileReader(path);
         BufferedReader br =new BufferedReader(fr);
 
 
 
-        String input=in[1];
+        String input=txt[1];
 
         System.out.print("\nRESULT:\n\n");
 
@@ -67,7 +60,7 @@ public class phone_Contact_List {
             //if the input contains letters and numbers
         else if(Pattern.matches("[A-Za-z0-9 ]+",input)){
             String newContact = makeFormat(input,br);
-            addContact(newContact,file);
+            addContact(newContact,path);
         }
         else
             throw new Exception("Invalid Name or Number Exception");
@@ -108,17 +101,17 @@ public class phone_Contact_List {
      * @throws Exception
      */
     public static void search_No(BufferedReader br, String input) throws Exception {
-        while((str=br.readLine())!=null){
-            if(str.contains(append(input))) {
+        while((obj=br.readLine())!=null){
+            if(obj.contains(append(input))) {
                 //check whether there are any duplicate numbers or not
-                if(count>=1)
+                if(temp>=1)
                     throw new Exception("Stored Data Duplicate Number Exception");
-                print(str);
-                count++;
+                print(obj);
+                temp++;
             }
         }
         //check whether the entered number found or not
-        if(count==0){
+        if(temp==0){
             System.out.println("No Contact Found");
         }
     }
@@ -130,14 +123,14 @@ public class phone_Contact_List {
      * @throws Exception
      */
     public static void search_Name(BufferedReader br, String input) throws Exception {
-        while((str=br.readLine())!=null){
-            if(str.contains(input)){
-                print(str);
-                count++;
+        while((obj=br.readLine())!=null){
+            if(obj.contains(input)){
+                print(obj);
+                temp++;
             }
         }
         //check whether the entered number found or not
-        if(count==0){
+        if(temp==0){
             System.out.println("No Contact Found");
         }
     }
@@ -158,8 +151,8 @@ public class phone_Contact_List {
         if(str2.length()!=10)
             throw new Exception(("Numbers of digits not 10"));
 
-        while((str=br.readLine())!=null){
-            if(str.contains(append(str2))) {
+        while((obj=br.readLine())!=null){
+            if(obj.contains(append(str2))) {
                 //check whether there are any duplicate numbers or not
                 throw new Exception("Duplicate Number Cannot Add");
             }
