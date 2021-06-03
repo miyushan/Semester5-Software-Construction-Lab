@@ -79,7 +79,6 @@ public class ContactList {
 
 
     /**
-     *
      * This method is used to convert the string into phone number format
      * @param num: phone number without - signs
      * @return
@@ -93,44 +92,45 @@ public class ContactList {
         return readS.toString();
     }
 
+
     /**
-     * search the number and print the details if it exists
-     * @param br: text file in buffered reader format
-     * @param input: inputted number
+     * This method is used to check number exist
+     * @param br: buffered reader text
+     * @param num: input number
      * @throws Exception
      */
-    public static void searchNumber(BufferedReader br, String input) throws Exception {
-        while((obj=br.readLine())!=null){
-            if(obj.contains(append(input))) {
-                //check whether there are any duplicate numbers or not
-                if(temp>=1)
-                    throw new Exception("Stored Data Duplicate Number Exception");
+    public static void searchNumber(BufferedReader br, String num) throws Exception {
+        while((obj=br.readLine()) != null){
+            if(obj.contains(append(num))) {
+                //check is there any duplicated numbers
+                if(temp >= 1)
+                    throw new Exception("Duplicate Numbers Exception");
                 print(obj);
                 temp++;
             }
         }
-        //check whether the entered number found or not
-        if(temp==0){
-            System.out.println("No Contact Found");
+        //check is the entered number exist
+        if(temp == 0){
+            System.out.println("CONTACT NOT FOUND");
         }
     }
 
     /**
-     * search the name and print the details if it exists
-     * @param br: text file in buffered reader format
-     * @param input: inputted name
+     * This method is used to check name and number exist
+     * @param br: buffered reader text
+     * @param name: input name
      * @throws Exception
      */
-    public static void searchName(BufferedReader br, String input) throws Exception {
-        while((obj=br.readLine())!=null){
-            if(obj.contains(input)){
+    public static void searchName(BufferedReader br, String name) throws Exception {
+        while((obj = br.readLine()) != null){
+            if(obj.contains(name)){
                 print(obj);
                 temp++;
             }
         }
-        //check whether the entered number found or not
-        if(temp==0){
-            System.out.println("No Contact Found");
+        //check is the entered number exist
+        if(temp == 0){
+            System.out.println("CONTACT NOT FOUND");
         }
     }
 
